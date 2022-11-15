@@ -1,19 +1,17 @@
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        substring = ""
-        lengths = []
-        index = 0
-  
-        for letter in s: # a b c a b c b b
-            counter = index
+        n = len(s)
+        ans = 0
+        # mp stores the current index of a character
+        mp = {}
 
-            while letter not in substring: # a
-                substring += letter # a ab abc |
-                counter += 1 
-                if counter != len(s): letter = s[counter]                
+        i = 0
+        # try to extend the range [i, j]
+        for j in range(n):
+            if s[j] in mp:
+                i = max(mp[s[j]], i)
 
-            lengths.append(len(substring))
-            substring = ""
-            index += 1
-            
-        return max(lengths) if len(lengths) > 0 else 0
+            ans = max(ans, j - i + 1)
+            mp[s[j]] = j + 1
+
+        return ans
