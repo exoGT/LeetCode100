@@ -1,17 +1,19 @@
 class Solution:
-    def longestPalindrome(self, s: str) -> str:
-        if len(s) == 1: return s
+    def longestPalindrome(self, s):
+        self.maxlen = 0
+        self.start = 0
+        
+        for i in range(len(s)):
+            self.expandFromCenter(s,i,i)
+            self.expandFromCenter(s,i,i+1)
+        return s[self.start:self.start+self.maxlen]
+        
 
-        cursor, longest, hashmap = 1, '', {}
-
-        for pivot in range(1, len(s)-1): # 1 2 3           
-            print('pivot', pivot, s[pivot], s[pivot-1:pivot+2])
-            cursor = 1
-            longest = s[pivot]
-            while (s[pivot - cursor] == s[pivot + cursor]) and (pivot - cursor != 0) and (pivot + cursor != len(s)):
-                longest = s[(pivot - cursor):(pivot + cursor + 1)]                
-                cursor += 1              
-            hashmap[longest] = len(longest)
-
-        print(hashmap)     
-        return max(hashmap, key=hashmap.get)
+    def expandFromCenter(self,s,l,r):
+        while l > -1 and r < len(s) and s[l] ==s[r]:
+            l -= 1
+            r += 1
+        
+        if self.maxlen < r-l-1:
+            self.maxlen = r-l-1
+            self.start = l + 1
