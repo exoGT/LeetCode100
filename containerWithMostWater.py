@@ -1,17 +1,17 @@
 class Solution:
     def maxArea(self, height: List[int]) -> int:
-        coordinates = []
+        pts = []
         for x, y in enumerate(height):
-            coordinates.append((y,x))
-        coordinates.sort(reverse=True)
+            pts.append((x,y))
 
-        area, ans = 0, 0
+        left, right, ans = 0, len(pts)-1, 0
 
-        for index in range(len(coordinates)-1):
-            head = coordinates[index]
+        while left < right:
+            area = min(pts[left][1], pts[right][1])*abs(pts[left][0]-pts[right][0])
+            if area > ans: ans = area
+            if pts[left][1] < pts[right][1]:
+                left += 1
+            else: right -= 1
 
-            for tup in coordinates[index:]:
-                area = min(head[0], tup[0])*abs(head[1]-tup[1])
-                if area > ans: ans = area
-        
         return ans
+
